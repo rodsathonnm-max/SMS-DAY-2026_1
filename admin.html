@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>SMS DAY 2026 | Admin</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+<header class="header">
+
+    <div class="brand">
+
+        <div class="brand-logo admin-logo">
+            SMS
+        </div>
+
+        <div>
+
+            <div class="brand-title">
+                SMS DAY 2026
+            </div>
+
+            <div class="brand-subtitle">
+                ADMIN DASHBOARD
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- =====================================
+     ADMIN LOGIN
+===================================== -->
+
+<main
+    id="adminLoginPage"
+    class="admin-login-page">
+
+
+    <div class="admin-login-card">
+
+
+        <div class="admin-icon">
+            A
+        </div>
+
+
+        <div class="mini-title admin-mini">
+            SMS DAY 2026
+        </div>
+
+
+        <h1>
+            Admin Access
+        </h1>
+
+
+        <p>
+            Manage posters and voting results.
+        </p>
+
+
+        <div class="input-group">
+
+            <label>
+                Admin Code
+            </label>
+
+            <input
+                id="adminCode"
+                type="password"
+                inputmode="numeric"
+                placeholder="Enter Admin Code">
+
+        </div>
+
+
+        <div
+            id="adminLoginError"
+            class="error-message">
+        </div>
+
+
+        <button
+            type="button"
+            class="main-button"
+            onclick="window.adminLogin()"
+        >
+            Enter Dashboard →
+        </button>
+
+    </div>
+
+</main>
+
+
+<!-- =====================================
+     DASHBOARD
+===================================== -->
+
+<main
+    id="adminDashboard"
+    class="admin-dashboard hidden">
+
+
+    <section class="admin-title-row">
+
+        <div>
+
+            <div class="mini-title admin-mini">
+                SMS DAY 2026
+            </div>
+
+            <h1>
+                Voting Dashboard
+            </h1>
+
+            <p>
+                Manage posters and monitor voting activity.
+            </p>
+
+        </div>
+
+
+        <button
+            class="main-button admin-add-button"
+            onclick="openPosterModal()">
+
+            + Add New Poster
+
+        </button>
+
+    </section>
+
+
+    <!-- STATS -->
+
+    <section class="stats-grid">
+
+
+        <div class="stat-card">
+
+            <span>
+                TOTAL POSTERS
+            </span>
+
+            <strong id="totalPosterCount">
+                0
+            </strong>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <span>
+                EMPLOYEE VOTES
+            </span>
+
+            <strong id="employeeVoteCount">
+                0
+            </strong>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <span>
+                COMMITTEE VOTES
+            </span>
+
+            <strong id="committeeVoteCount">
+                0
+            </strong>
+
+        </div>
+
+
+    </section>
+
+
+    <!-- TABS -->
+
+    <div class="admin-tabs">
+
+        <button
+            class="admin-tab active"
+            onclick="showAdminTab('posters', this)">
+
+            Manage Posters
+
+        </button>
+
+
+        <button
+            class="admin-tab"
+            onclick="showAdminTab('employee', this)">
+
+            Employee Results
+
+        </button>
+
+
+        <button
+            class="admin-tab"
+            onclick="showAdminTab('committee', this)">
+
+            Committee Results
+
+        </button>
+
+    </div>
+
+
+    <!-- POSTERS -->
+
+    <section
+        id="adminPostersSection"
+        class="admin-section">
+
+
+        <div
+            id="adminPosterGrid"
+            class="admin-poster-grid">
+        </div>
+
+
+    </section>
+
+
+    <!-- EMPLOYEE RESULTS -->
+
+    <section
+        id="adminEmployeeSection"
+        class="admin-section hidden">
+
+
+        <div class="results-card">
+
+
+            <div class="results-title">
+
+                <div>
+
+                    <h2>
+                        Employee Results
+                    </h2>
+
+                    <p>
+                        Individual Employee voting records
+                    </p>
+
+                </div>
+
+
+                <button
+                    class="danger-button"
+                    onclick="resetEmployeeVotes()">
+
+                    Reset All Employee Votes
+
+                </button>
+
+            </div>
+
+
+            <div
+                id="employeePollResults"
+                class="poll-results">
+            </div>
+
+
+            <div class="table-scroll">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>EMPLOYEE ID</th>
+
+                            <th>POSTER</th>
+
+                            <th>DATE</th>
+
+                            <th>ACTION</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="employeeResultRows">
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- COMMITTEE RESULTS -->
+
+<section
+    id="adminCommitteeSection"
+    class="admin-section hidden">
+
+    <div class="results-card">
+
+        <div class="results-title">
+
+            <div>
+                <h2>
+                    Committee Results
+                </h2>
+
+                <p>
+                    Committee scoring results
+                </p>
+            </div>
+
+            <button
+                class="danger-button"
+                onclick="resetCommitteeVotes()">
+
+                Reset All Committee Votes
+
+            </button>
+
+        </div>
+
+
+        <div
+            id="committeePollResults"
+            class="poll-results">
+        </div>
+
+
+        <div class="table-scroll">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>POSTER</th>
+
+                        <th>
+                            SMS<br>30%
+                        </th>
+
+                        <th>
+                            CLARITY<br>25%
+                        </th>
+
+                        <th>
+                            CREATIVITY<br>20%
+                        </th>
+
+                        <th>
+                            DESIGN<br>15%
+                        </th>
+
+                        <th>
+                            AI / PROMPT<br>10%
+                        </th>
+
+                        <th>TOTAL</th>
+
+                        <th>ACTION</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="committeeResultRows">
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+</main>
+
+
+<!-- =====================================
+     ADD / EDIT POSTER
+===================================== -->
+
+<div
+    id="posterModal"
+    class="admin-modal hidden">
+
+
+    <div class="poster-form-card">
+
+
+        <div class="modal-title-row">
+
+            <div>
+
+                <div class="mini-title admin-mini">
+                    SMS DAY 2026
+                </div>
+
+                <h2 id="posterModalTitle">
+                    Add New Poster
+                </h2>
+
+            </div>
+
+
+            <button
+                class="modal-close"
+                onclick="closePosterModal()">
+
+                ×
+
+            </button>
+
+        </div>
+
+
+        <input
+            id="editingPosterID"
+            type="hidden">
+
+
+        <!-- POSTER NAME -->
+
+        <div class="input-group">
+
+            <label>
+                Poster Name
+            </label>
+
+            <input
+                id="posterName"
+                type="text"
+                placeholder="Example: A Brighter Tomorrow">
+
+        </div>
+
+
+        <!-- =====================================
+             IMAGE PATHS
+        ===================================== -->
+
+        <div class="upload-grid">
+
+
+            <!-- THAI -->
+
+            <div class="upload-box">
+
+                <div class="upload-title">
+                    THAI VERSION
+                </div>
+
+
+                <div
+                    id="thaiImagePreview"
+                    class="image-preview">
+
+                    <span>
+                        Thai Poster Preview
+                    </span>
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label>
+                        Thai Image Path
+                    </label>
+
+                    <input
+                        id="thaiImagePath"
+                        type="text"
+                        placeholder="images/poster01-th.jpg"
+                        oninput="previewImagePath('thai')">
+
+                    <small>
+                        Example: images/poster01-th.jpg
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <!-- ENGLISH -->
+
+            <div class="upload-box">
+
+                <div class="upload-title">
+                    ENGLISH VERSION
+                </div>
+
+
+                <div
+                    id="englishImagePreview"
+                    class="image-preview">
+
+                    <span>
+                        English Poster Preview
+                    </span>
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label>
+                        English Image Path
+                    </label>
+
+                    <input
+                        id="englishImagePath"
+                        type="text"
+                        placeholder="images/poster01-en.jpg"
+                        oninput="previewImagePath('english')">
+
+                    <small>
+                        Example: images/poster01-en.jpg
+                    </small>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =====================================
+             SAFETY MESSAGE
+        ===================================== -->
+
+        <div class="input-group">
+
+            <label>
+                Safety Message
+            </label>
+
+            <textarea
+                id="posterKeywords"
+                rows="3"
+                placeholder="Enter the Safety Message..."></textarea>
+
+        </div>
+
+
+        <!-- AI PROMPTS -->
+        <!-- AI PROMPT -->
+
+        <div class="input-group">
+
+            <label>
+                AI Prompt
+            </label>
+
+            <textarea
+                id="posterPrompt"
+                rows="10"
+                placeholder="Enter the full AI Prompt..."></textarea>
+
+            <small>
+                Full AI Prompt • No text limit
+            </small>
+
+        </div>
+
+
+        <div
+            id="posterFormError"
+            class="error-message">
+        </div>
+
+
+        <div class="modal-buttons">
+
+            <button
+                class="secondary-button"
+                onclick="closePosterModal()">
+
+                Cancel
+
+            </button>
+
+
+            <button
+                class="main-button admin-save-button"
+                onclick="savePoster()">
+
+                Save Poster
+
+            </button>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<!-- =====================================
+     SCRIPTS
+===================================== -->
+
+<script type="module" src="firebase.js"></script>
+<script src="app.js"></script>
+
+
+</body>
+
+</html>

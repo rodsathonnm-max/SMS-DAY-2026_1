@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SMS DAY 2026 | Committee Voting</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="committee-page">
+
+<header class="header">
+
+    <div class="brand">
+
+        <div class="brand-logo committee-logo">
+            SMS
+        </div>
+
+        <div>
+
+            <div class="brand-title">
+                SMS DAY 2026
+            </div>
+
+            <div class="brand-subtitle">
+                COMMITTEE VOTING
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="language-switch">
+
+        <button
+            class="language-button active"
+            data-language="th"
+            onclick="changeLanguage('th')">
+            TH
+        </button>
+
+        <button
+            class="language-button"
+            data-language="en"
+            onclick="changeLanguage('en')">
+            EN
+        </button>
+
+    </div>
+
+</header>
+
+
+<main
+    id="committeeVotingPage"
+    class="voting-page">
+
+    <section class="page-intro committee-intro">
+
+        <div class="intro-badge committee-badge">
+            SMS DAY 2026 • COMMITTEE
+        </div>
+
+        <h1 id="committeeVotingTitle">
+            พิจารณาและเลือกโปสเตอร์
+        </h1>
+
+        <p id="committeeVotingDescription">
+            ดูโปสเตอร์ภาษาไทยและภาษาอังกฤษ
+            พร้อม Keywords และ AI Prompt ก่อนเลือกผลงาน
+        </p>
+
+    </section>
+
+
+    <section class="voting-content">
+
+        <div
+            id="committeePosterGrid"
+            class="poster-list">
+        </div>
+
+
+        <div
+            id="committeeVoteError"
+            class="error-message center">
+        </div>
+
+
+        <div class="submit-container">
+
+            <button
+                class="main-button committee-submit-button"
+                onclick="submitCommitteeVote()">
+
+                <span id="committeeSubmitText">
+                    ยืนยันการโหวตกรรมการ
+                </span>
+
+                <span>→</span>
+
+            </button>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- SUCCESS -->
+
+<main
+    id="committeeSuccessPage"
+    class="success-page hidden">
+
+    <div class="success-card">
+
+        <div class="success-icon committee-success">
+            ✓
+        </div>
+
+        <div class="intro-badge committee-badge">
+            SMS DAY 2026
+        </div>
+
+        <h1 id="committeeSuccessTitle">
+            ขอบคุณสำหรับการโหวต
+        </h1>
+
+        <p id="committeeSuccessText">
+            บันทึกผลโหวตของกรรมการเรียบร้อยแล้ว
+        </p>
+
+    </div>
+
+</main>
+
+
+<!-- IMAGE VIEWER -->
+
+<div
+    id="imageViewer"
+    class="poster-viewer hidden"
+    onclick="closeImageViewer()">
+
+    <div
+        class="poster-viewer-box"
+        onclick="event.stopPropagation()">
+
+        <div class="poster-viewer-header">
+
+            <div>
+
+                <div class="viewer-small">
+                    POSTER PREVIEW
+                </div>
+
+                <h3 id="viewerTitle">
+                    Poster
+                </h3>
+
+            </div>
+
+            <button
+                type="button"
+                class="viewer-close"
+                onclick="closeImageViewer()">
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="poster-viewer-image">
+
+            <img
+                id="viewerImage"
+                src=""
+                alt="Poster Preview">
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- PROMPT VIEWER -->
+
+<div
+    id="promptViewer"
+    class="prompt-viewer hidden"
+    onclick="closePromptViewer()">
+
+    <div
+        class="prompt-viewer-box"
+        onclick="event.stopPropagation()">
+
+        <div class="prompt-viewer-header">
+
+            <div>
+
+                <div class="viewer-small">
+                    AI PROMPT
+                </div>
+
+                <h3 id="promptViewerTitle">
+                    Poster
+                </h3>
+
+            </div>
+
+            <button
+                type="button"
+                class="viewer-close"
+                onclick="closePromptViewer()">
+                ×
+            </button>
+
+        </div>
+
+
+        <div
+            id="promptViewerText"
+            class="prompt-full-text">
+        </div>
+
+    </div>
+
+</div>
+
+<script type="module" src="firebase.js"></script>
+<script src="app.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    changeLanguage("th");
+});
+</script>
+
+</body>
+</html>

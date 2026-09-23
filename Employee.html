@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SMS DAY 2026 | Employee Voting</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="brand">
+
+        <div class="brand-logo">
+            SMS
+        </div>
+
+        <div>
+            <div class="brand-title">
+                SMS DAY 2026
+            </div>
+
+            <div class="brand-subtitle">
+                POSTER VOTING
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="language-switch">
+
+        <button
+            class="language-button active"
+            data-language="th"
+            onclick="changeLanguage('th')">
+            TH
+        </button>
+
+        <button
+            class="language-button"
+            data-language="en"
+            onclick="changeLanguage('en')">
+            EN
+        </button>
+
+    </div>
+
+</header>
+
+
+<!-- ==================================================
+     LOGIN
+================================================== -->
+
+<main id="employeeLoginPage" class="employee-login">
+
+    <section class="login-hero">
+
+        <div class="hero-content">
+
+            <div class="hero-small">
+                SMS DAY 2026
+            </div>
+
+            <h1>
+                POSTER<br>
+                VOTING
+            </h1>
+
+            <p id="heroSlogan">
+                ร่วมโหวตโปสเตอร์ที่คุณชื่นชอบ<br>
+                สำหรับ SMS DAY 2026
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <section class="login-side">
+
+        <div class="login-container">
+
+            <div class="employee-icon">
+                👤
+            </div>
+
+            <div class="mini-title">
+                SMS DAY 2026
+            </div>
+
+            <h2 id="employeeLoginTitle">
+                Employee Voting
+            </h2>
+
+            <p
+                id="employeeLoginDescription"
+                class="login-description">
+
+                กรอก Employee ID เพื่อเข้าร่วมโหวตโปสเตอร์
+                SMS DAY 2026
+
+            </p>
+
+
+            <div class="input-group">
+
+                <label id="employeeIDLabel">
+                    Employee ID
+                </label>
+
+                <input
+                    id="employeeID"
+                    type="text"
+                    inputmode="numeric"
+                    maxlength="6"
+                    autocomplete="off"
+                    placeholder="Enter 6-digit Employee ID">
+
+            </div>
+
+
+            <div
+                id="employeeLoginError"
+                class="error-message">
+            </div>
+
+
+            <button
+                class="main-button"
+                onclick="employeeLogin()">
+
+                <span id="employeeContinueText">
+                    เข้าสู่การโหวต
+                </span>
+
+                <span>→</span>
+
+            </button>
+
+
+            <p
+                id="employeeOnceText"
+                class="login-note">
+
+                Employee ID สามารถโหวตได้เพียง 1 ครั้ง
+
+            </p>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- ==================================================
+     VOTING
+================================================== -->
+
+<main
+    id="employeeVotingPage"
+    class="voting-page hidden">
+
+    <section class="page-intro">
+
+        <div class="intro-badge">
+            SMS DAY 2026 • POSTER VOTING
+        </div>
+
+        <h1 id="employeeVotingTitle">
+            เลือกโปสเตอร์ที่คุณชื่นชอบ
+        </h1>
+
+        <p id="employeeVotingDescription">
+            ดูโปสเตอร์ทั้งเวอร์ชันภาษาไทยและภาษาอังกฤษ
+            และเลือกผลงานที่คุณชื่นชอบที่สุด 1 ผลงาน
+        </p>
+
+    </section>
+
+
+    <section class="voting-content">
+
+        <div
+            id="employeePosterGrid"
+            class="poster-list">
+        </div>
+
+
+        <div
+            id="employeeVoteError"
+            class="error-message center">
+        </div>
+
+
+        <div class="submit-container">
+
+            <button
+                class="main-button submit-vote-button"
+                onclick="submitEmployeeVote()">
+
+                <span id="employeeSubmitText">
+                    ยืนยันการโหวต
+                </span>
+
+                <span>→</span>
+
+            </button>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- ==================================================
+     SUCCESS
+================================================== -->
+
+<main
+    id="employeeSuccessPage"
+    class="success-page hidden">
+
+    <div class="success-card">
+
+        <div class="success-icon">
+            ✓
+        </div>
+
+        <div class="intro-badge">
+            SMS DAY 2026
+        </div>
+
+        <h1 id="employeeSuccessTitle">
+            ขอบคุณสำหรับการโหวต
+        </h1>
+
+        <p id="employeeSuccessText">
+            บันทึกผลโหวตของคุณเรียบร้อยแล้ว
+        </p>
+
+        <button
+            class="main-button"
+            onclick="finishEmployee()">
+
+            Finish
+
+        </button>
+
+    </div>
+
+</main>
+
+
+<!-- ==================================================
+     IMAGE VIEWER
+================================================== -->
+
+<div
+    id="imageViewer"
+    class="poster-viewer hidden"
+    onclick="closeImageViewer()">
+
+    <div
+        class="poster-viewer-box"
+        onclick="event.stopPropagation()">
+
+        <div class="poster-viewer-header">
+
+            <div>
+
+                <div class="viewer-small">
+                    POSTER PREVIEW
+                </div>
+
+                <h3 id="viewerTitle">
+                    Poster
+                </h3>
+
+            </div>
+
+            <button
+                type="button"
+                class="viewer-close"
+                onclick="closeImageViewer()">
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="poster-viewer-image">
+
+            <img
+                id="viewerImage"
+                src=""
+                alt="Poster Preview">
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script type="module" src="firebase.js"></script>
+<script src="app.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    changeLanguage("th");
+});
+</script>
+
+</body>
+</html>
