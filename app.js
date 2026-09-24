@@ -1247,7 +1247,7 @@ function renderCommitteePosters() {
                                 ? `
                                     <img
                                         src="${escapeHTML(poster.englishImage)}"
-                                        alt="English Version">
+                                        alt="English Version"
                                         loading="lazy"
                                         decoding="async">
                                 `
