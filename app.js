@@ -687,7 +687,7 @@ function renderEmployeePosters() {
                                         <img
                                             src="${escapeHTML(poster.thaiImage)}"
                                             alt="Thai Version"
-                                            loading="lazy"
+                                            ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'}
                                             decoding="async">
                                       `
                                     : `
@@ -747,7 +747,7 @@ function renderEmployeePosters() {
                                         <img
                                             src="${escapeHTML(poster.englishImage)}"
                                             alt="English Version"
-                                            loading="lazy"
+                                            ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'}
                                             decoding="async">
                                       `
                                     : `
@@ -1193,7 +1193,7 @@ function renderCommitteePosters() {
                                     <img
                                         src="${escapeHTML(poster.thaiImage)}"
                                         alt="Thai Version"
-                                        loading="lazy"
+                                        ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'}
                                         decoding="async">
                                                                     `
                                 : `
@@ -1248,7 +1248,7 @@ function renderCommitteePosters() {
                                     <img
                                         src="${escapeHTML(poster.englishImage)}"
                                         alt="English Version"
-                                        loading="lazy"
+                                        ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'}
                                         decoding="async">
                                 `
                                 : `
@@ -1462,6 +1462,9 @@ function createScoreRow(
             <button
                 type="button"
                 class="score-option ${active}"
+                data-poster-id="${posterID}"
+                data-criterion="${criterion}"
+                data-score="${score}"
                 onclick="setCommitteeScore(
                     '${posterID}',
                     '${criterion}',
@@ -1506,7 +1509,6 @@ function setCommitteeScore(
 ) {
 
     if (!committeeScores[posterID]) {
-
         committeeScores[posterID] = {
             sms: null,
             clarity: null,
@@ -1516,23 +1518,60 @@ function setCommitteeScore(
         };
     }
 
-
-    // กดคะแนนเดิมซ้ำ = ยกเลิกคะแนน
+    // ถ้ากดคะแนนเดิมซ้ำ = ยกเลิก
     if (
-        committeeScores[posterID][criterion]
-        === score
+        committeeScores[posterID][criterion] === score
     ) {
-
-        committeeScores[posterID][criterion] =
-            null;
-
+        committeeScores[posterID][criterion] = null;
     } else {
-
-        committeeScores[posterID][criterion] =
-            score;
+        committeeScores[posterID][criterion] = score;
     }
 
 
+    // ============================
+    // UPDATE SCORE BUTTONS ONLY
+    // ไม่ Render Poster ใหม่ทั้งหมด
+    // ============================
+
+    const buttons = document.querySelectorAll(
+        `.score-option[data-poster-id="${posterID}"][data-criterion="${criterion}"]`
+    );
+
+    buttons.forEach(button => {
+
+        const buttonScore =
+            Number(button.dataset.score);
+
+        const selectedScore =
+            committeeScores[posterID][criterion];
+
+        button.classList.toggle(
+            "active",
+            selectedScore !== null &&
+            selectedScore !== undefined &&
+            buttonScore === selectedScore
+        );
+    });
+
+
+    // ============================
+    // UPDATE TOTAL SCORE ONLY
+    // ============================
+
+    const totalElement =
+        document.getElementById(
+            `score-${posterID}`
+        );
+
+    if (totalElement) {
+        totalElement.textContent =
+            `${calculateCommitteeScore(
+                posterID
+            ).toFixed(2)}%`;
+    }
+
+
+    // ล้าง Error
     const error =
         document.getElementById(
             "committeeVoteError"
@@ -1541,9 +1580,6 @@ function setCommitteeScore(
     if (error) {
         error.textContent = "";
     }
-
-
-    renderCommitteePosters();
 }
 
 
