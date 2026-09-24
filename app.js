@@ -686,7 +686,9 @@ function renderEmployeePosters() {
                                     ? `
                                         <img
                                             src="${escapeHTML(poster.thaiImage)}"
-                                            alt="Thai Version">
+                                            alt="Thai Version"
+                                            loading="lazy"
+                                            decoding="async">
                                       `
                                     : `
                                         <div class="poster-no-image">
@@ -744,7 +746,9 @@ function renderEmployeePosters() {
                                     ? `
                                         <img
                                             src="${escapeHTML(poster.englishImage)}"
-                                            alt="English Version">
+                                            alt="English Version"
+                                            loading="lazy"
+                                            decoding="async">
                                       `
                                     : `
                                         <div class="poster-no-image">
@@ -1188,8 +1192,10 @@ function renderCommitteePosters() {
                                 ? `
                                     <img
                                         src="${escapeHTML(poster.thaiImage)}"
-                                        alt="Thai Version">
-                                `
+                                        alt="Thai Version"
+                                        loading="lazy"
+                                        decoding="async">
+                                                                    `
                                 : `
                                     <div class="poster-no-image">
                                         No Thai Image
@@ -1242,6 +1248,8 @@ function renderCommitteePosters() {
                                     <img
                                         src="${escapeHTML(poster.englishImage)}"
                                         alt="English Version">
+                                        loading="lazy"
+                                        decoding="async">
                                 `
                                 : `
                                     <div class="poster-no-image">
