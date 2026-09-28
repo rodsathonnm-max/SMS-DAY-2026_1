@@ -1310,19 +1310,16 @@ function renderCommitteePosters() {
 
                     <button
                         type="button"
-                        class="view-prompt-button"
-                        onclick="openPromptViewer('${poster.id}')">
+                        class="prompt-button"
+                        onclick="openPromptViewer('${poster.id}', 'th')">
+                        Prompt TH
+                    </button>
 
-                        <span>
-                            ${
-                                currentLanguage === "th"
-                                    ? "เปิดอ่าน AI Prompt"
-                                    : "View AI Prompt"
-                            }
-                        </span>
-
-                        <span>→</span>
-
+                    <button
+                        type="button"
+                        class="prompt-button"
+                        onclick="openPromptViewer('${poster.id}', 'en')">
+                        Prompt EN
                     </button>
 
                 </div>
@@ -1908,10 +1905,7 @@ function openPosterModal() {
         ""
     );
 
-    setInputValue(
-        ["posterPrompt"],
-        ""
-    );
+    ["posterPrompt"]
     setInputValue(
         ["thaiImagePath"],
         ""
@@ -2116,8 +2110,11 @@ async function savePoster() {
             "posterKeywords"
         );
 
-    const promptElement =
-    document.getElementById("posterPrompt");
+    const thaiPromptElement =
+    document.getElementById("posterThaiPrompt");
+
+    const englishPromptElement =
+        document.getElementById("posterEnglishPrompt");
 
     const thaiImageElement =
         document.getElementById(
@@ -2150,10 +2147,15 @@ async function savePoster() {
             ? safetyElement.value.trim()
             : "";
 
-    const prompt =
-    promptElement
-        ? promptElement.value.trim()
+    const thaiPrompt =
+    thaiPromptElement
+        ? thaiPromptElement.value.trim()
         : "";
+
+    const englishPrompt =
+        englishPromptElement
+            ? englishPromptElement.value.trim()
+            : "";
 
     const editID =
         editElement
@@ -2232,11 +2234,13 @@ async function savePoster() {
         poster.keywords =
             keywords;
 
-        poster.prompt =
-            prompt;
+        poster.thaiPrompt =
+            thaiPrompt;
 
-        delete poster.thaiPrompt;
-        delete poster.englishPrompt;
+        poster.englishPrompt =
+            englishPrompt;
+
+        delete poster.prompt;
 
         poster.thaiImage =
             thaiImageData;
@@ -2268,8 +2272,11 @@ async function savePoster() {
             keywords:
                 keywords,
 
-            prompt:
-                prompt,
+            thaiPrompt:
+                thaiPrompt,
+
+            englishPrompt:
+                englishPrompt,
 
             createdAt:
                 new Date().toISOString()
@@ -2338,10 +2345,16 @@ function editPoster(
 
 
     setInputValue(
-        ["posterPrompt"],
-        poster.prompt ||
-        poster.thaiPrompt ||
+    ["posterThaiPrompt"],
+    poster.thaiPrompt ||
+    poster.prompt ||
+    ""
+    );
+
+    setInputValue(
+        ["posterEnglishPrompt"],
         poster.englishPrompt ||
+        poster.prompt ||
         ""
     );
 
@@ -4103,7 +4116,7 @@ document.addEventListener(
    AI PROMPT VIEWER
 ========================================================= */
 
-function openPromptViewer(posterID) {
+function openPromptViewer(posterID, language) {
 
     const poster =
         getPosters().find(
@@ -4130,25 +4143,36 @@ function openPromptViewer(posterID) {
     }
 
 
-    // AI Prompt ช่องเดียว
-    // รองรับข้อมูล Poster เก่าที่ยังเป็น Thai / English Prompt
-    const promptText =
-        poster.prompt ||
-        poster.thaiPrompt ||
-        poster.englishPrompt ||
-        "";
+    let promptText = "";
 
+    if (language === "th") {
 
-    title.textContent =
-        `${poster.name || "Poster"} • AI Prompt`;
+        promptText =
+            poster.thaiPrompt ||
+            poster.prompt ||
+            "";
+
+        title.textContent =
+            `${poster.name || "Poster"} • Prompt TH`;
+
+    } else {
+
+        promptText =
+            poster.englishPrompt ||
+            poster.prompt ||
+            "";
+
+        title.textContent =
+            `${poster.name || "Poster"} • Prompt EN`;
+    }
 
 
     text.textContent =
         promptText ||
         (
-            currentLanguage === "th"
-                ? "ยังไม่มี AI Prompt สำหรับโปสเตอร์นี้"
-                : "No AI Prompt is available for this poster."
+            language === "th"
+                ? "ยังไม่มี Prompt TH สำหรับโปสเตอร์นี้"
+                : "No Prompt EN is available for this poster."
         );
 
 
