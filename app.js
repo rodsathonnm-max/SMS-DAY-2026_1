@@ -1310,20 +1310,21 @@ function renderCommitteePosters() {
 
                     <button
                         type="button"
-                        class="prompt-button"
+                        class="view-prompt-button"
                         onclick="openPromptViewer('${poster.id}', 'th')">
-                        Prompt TH
+                        <span>Prompt TH</span>
+                        <span>→</span>
                     </button>
 
                     <button
                         type="button"
-                        class="prompt-button"
+                        class="view-prompt-button"
                         onclick="openPromptViewer('${poster.id}', 'en')">
-                        Prompt EN
+                        <span>Prompt EN</span>
+                        <span>→</span>
                     </button>
 
                 </div>
-
             </div>
             <!-- COMMITTEE SCORING -->
 
