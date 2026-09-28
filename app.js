@@ -1906,7 +1906,15 @@ function openPosterModal() {
         ""
     );
 
-    ["posterPrompt"]
+    setInputValue(
+    ["posterThaiPrompt"],
+    ""
+    );
+
+    setInputValue(
+        ["posterEnglishPrompt"],
+        ""
+    );
     setInputValue(
         ["thaiImagePath"],
         ""
