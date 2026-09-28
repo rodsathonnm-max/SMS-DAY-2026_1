@@ -1380,6 +1380,11 @@ function renderCommitteePosters() {
                     currentLanguage === "th"
                         ? "ความสอดคล้องกับ SMS / ความปลอดภัยทางการบิน"
                         : "SMS / Aviation Safety Relevance",
+
+                    currentLanguage === "th"
+                        ? "แนวคิดถูกต้อง ชัดเจน และเชื่อมโยงกับความปลอดภัยทางการบิน"
+                        : "The concept is accurate, clear, and relevant to aviation safety.",
+
                     30,
                     scores.sms
                 )}
@@ -1391,6 +1396,11 @@ function renderCommitteePosters() {
                     currentLanguage === "th"
                         ? "ความชัดเจนของข้อความด้านความปลอดภัย"
                         : "Safety Message Clarity",
+
+                    currentLanguage === "th"
+                        ? "ผู้ชมเข้าใจสิ่งที่ต้องการสื่อได้ง่าย และสามารถสร้างการตระหนักรู้หรือกระตุ้นให้เกิดการคิดต่อ"
+                        : "The message is easy to understand and can promote safety awareness or encourage further thought.",
+
                     25,
                     scores.clarity
                 )}
@@ -1402,6 +1412,11 @@ function renderCommitteePosters() {
                     currentLanguage === "th"
                         ? "ความคิดสร้างสรรค์และความแปลกใหม่"
                         : "Creativity & Originality",
+
+                    currentLanguage === "th"
+                        ? "มีแนวคิด วิธีเล่าเรื่อง หรือมุมมองที่น่าสนใจและแตกต่าง"
+                        : "Demonstrates an interesting and distinctive concept, storytelling approach, or perspective.",
+
                     20,
                     scores.creativity
                 )}
@@ -1413,6 +1428,11 @@ function renderCommitteePosters() {
                     currentLanguage === "th"
                         ? "การออกแบบและการสื่อสารผ่านภาพ"
                         : "Design & Visual Communication",
+
+                    currentLanguage === "th"
+                        ? "องค์ประกอบโดยรวมเหมาะสม อ่านง่าย ดึงดูดสายตา และภาพสนับสนุนข้อความที่ต้องการสื่อ"
+                        : "The overall composition is appropriate, readable, visually engaging, and supports the intended message.",
+
                     15,
                     scores.design
                 )}
@@ -1424,10 +1444,14 @@ function renderCommitteePosters() {
                     currentLanguage === "th"
                         ? "การใช้ AI / Prompt อย่างมีประสิทธิภาพ"
                         : "Effective Use of AI / Prompt",
+
+                    currentLanguage === "th"
+                        ? "Prompt และการใช้ AI สะท้อนแนวคิดของผู้สร้างและช่วยพัฒนาผลงานได้อย่างเหมาะสม"
+                        : "The Prompt and use of AI reflect the creator's concept and appropriately support the development of the work.",
+
                     10,
                     scores.ai
                 )}
-
             </div>
         `;
 
@@ -1443,6 +1467,7 @@ function createScoreRow(
     posterID,
     criterion,
     title,
+    description,
     weight,
     currentScore
 ) {
@@ -1452,11 +1477,11 @@ function createScoreRow(
     for (let score = 0; score <= 5; score++) {
 
         const active =
-        currentScore !== null &&
-        currentScore !== undefined &&
-        Number(currentScore) === score
-            ? "active"
-            : "";
+            currentScore !== null &&
+            currentScore !== undefined &&
+            Number(currentScore) === score
+                ? "active"
+                : "";
 
         buttons += `
             <button
@@ -1475,23 +1500,32 @@ function createScoreRow(
         `;
     }
 
-
     return `
-
         <div class="score-row">
 
             <div class="score-row-title">
 
-                <div>
-                    ${escapeHTML(title)}
+                <div class="score-criterion-content">
+
+                    <div class="score-criterion-heading">
+
+                        <div class="score-criterion-name">
+                            ${escapeHTML(title)}
+                        </div>
+
+                        <span class="score-weight">
+                            ${weight}%
+                        </span>
+
+                    </div>
+
+                    <div class="score-criterion-description">
+                        ${escapeHTML(description)}
+                    </div>
+
                 </div>
 
-                <span>
-                    ${weight}%
-                </span>
-
             </div>
-
 
             <div class="score-options">
                 ${buttons}
@@ -2368,16 +2402,12 @@ function editPoster(
    DELETE POSTER
 ========================================================= */
 
-async function deletePoster(
-    posterID
-) {
+async function deletePoster(posterID) {
 
     const poster =
         getPosters().find(
-            item =>
-                item.id === posterID
+            item => item.id === posterID
         );
-
 
     if (!poster) {
         return;
@@ -2386,36 +2416,69 @@ async function deletePoster(
 
     const confirmed =
         confirm(
-            `Delete "${poster.name}"?\n\nVotes for this poster will also be removed.`
+            `Delete "${poster.name}"?\n\n` +
+            `This will delete the poster.\n` +
+            `Employee and Committee voting records will NOT be deleted automatically.`
         );
-
 
     if (!confirmed) {
         return;
     }
 
 
+    if (
+        !window.FirebaseStore ||
+        typeof window.FirebaseStore.deletePoster !== "function"
+    ) {
+
+        alert(
+            "Firebase is not ready."
+        );
+
+        return;
+    }
+
+
     try {
 
-        if (!window.FirebaseStore) {
-
-            throw new Error(
-                "Firebase is not ready"
-            );
-        }
-
+        /* =========================
+           DELETE POSTER FROM FIREBASE
+        ========================= */
 
         await window.FirebaseStore
-            .deletePoster(
-                posterID
-            );
+            .deletePoster(posterID);
 
+
+        /* =========================
+           UPDATE LOCAL POSTER DATA
+        ========================= */
 
         firebasePosters =
             firebasePosters.filter(
                 item =>
                     item.id !== posterID
             );
+
+
+        /* =========================
+           REFRESH ADMIN
+        ========================= */
+
+        refreshAdmin();
+
+        renderEmployeeResults();
+
+        renderCommitteeResults();
+
+        renderEmployeePollResults();
+
+        renderCommitteePollResults();
+
+
+        console.log(
+            "Poster deleted:",
+            posterID
+        );
 
 
     } catch (error) {
@@ -2425,60 +2488,11 @@ async function deletePoster(
             error
         );
 
-
         alert(
             "Cannot delete Poster from Firebase."
         );
-
-        return;
     }
-
-
-    const employeeVotes =
-        getEmployeeVotes();
-
-
-    Object.keys(
-        employeeVotes
-    ).forEach(
-        employeeID => {
-
-            if (
-                employeeVotes[
-                    employeeID
-                ].posterID === posterID
-            ) {
-
-                delete employeeVotes[
-                    employeeID
-                ];
-            }
-        }
-    );
-
-
-    saveEmployeeVotes(
-        employeeVotes
-    );
-
-
-    const committeeVotes =
-        getCommitteeVotes()
-            .filter(
-                vote =>
-                    vote.posterID !==
-                    posterID
-            );
-
-
-    saveCommitteeVotes(
-        committeeVotes
-    );
-
-
-    refreshAdmin();
 }
-
 
 /* =========================================================
    EMPLOYEE POLL RESULTS

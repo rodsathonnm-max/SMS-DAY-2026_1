@@ -7841,3 +7841,52 @@ td {
         object-fit: contain;
     }
 }
+.score-criterion-description {
+    margin-top: 5px;
+    font-size: 13px;
+    line-height: 1.5;
+    font-weight: 400;
+    color: #718096;
+    max-width: 720px;
+}
+.score-row-title {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.score-criterion-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.score-row-title > span {
+    flex-shrink: 0;
+    white-space: nowrap;
+    margin-left: 16px;
+
+}
+.score-criterion-heading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: nowrap;
+}
+
+.score-criterion-name {
+    font-weight: 600;
+}
+
+.score-weight {
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.score-criterion-description {
+    margin-top: 4px;
+    font-size: 13px;
+    line-height: 1.5;
+    font-weight: 400;
+    color: #718096;
+}
